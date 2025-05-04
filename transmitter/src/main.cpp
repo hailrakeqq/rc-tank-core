@@ -1,18 +1,25 @@
+#include <SPI.h>
+#include <RF24.h>
 #include <Arduino.h>
+RF24 radio(9, 10); // CE, CSN
 
-// put function declarations here:
-int myFunction(int, int);
+const byte address[6] = "00001";
 
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+void setup()
+{
+  Serial.begin(9600);
+  radio.begin();
+  radio.openWritingPipe(address);
+  radio.setPALevel(RF24_PA_LOW);
+  radio.stopListening(); // Передаємо
+
+  Serial.println("Передавач готовий");
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+void loop()
+{
+  const char text[] = "Привіт!";
+  radio.write(&text, sizeof(text));
+  Serial.println("Повідомлення надіслано");
+  delay(1000);
 }
