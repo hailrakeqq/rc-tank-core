@@ -1,7 +1,7 @@
 #include <SPI.h>
 #include <RF24.h>
 #include <Arduino.h>
-RF24 radio(9, 10); // CE, CSN
+RF24 radio(13, 11); // CE, CSN
 
 const byte address[6] = "00001";
 
