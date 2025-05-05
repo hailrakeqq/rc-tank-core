@@ -11,15 +11,21 @@ void setup()
   radio.begin();
   radio.openWritingPipe(address);
   radio.setPALevel(RF24_PA_LOW);
-  radio.stopListening(); // Передаємо
+  radio.stopListening();
 
-  Serial.println("Передавач готовий");
+  Serial.println("Transmitter ready");
 }
 
 void loop()
 {
-  const char text[] = "Hello!";
-  radio.write(&text, sizeof(text));
-  Serial.println("Повідомлення надіслано");
-  delay(1000);
+  int leftRaw = analogRead(A0);  // 0..1023
+  int rightRaw = analogRead(A1); // 0..1023
+
+  int leftTrackSpeed = map(leftRaw, 0, 1023, -256, 256);   // -256..256
+  int rightTrackSpeed = map(rightRaw, 0, 1023, -256, 256); // -256..256
+
+  char data[32];
+  sprintf(data, "%d;%d", leftTrackSpeed, rightTrackSpeed);
+  radio.write(&data, sizeof(data));
+  Serial.println("Data send: " + String(data));
 }

@@ -11,9 +11,9 @@ void setup()
   radio.begin();
   radio.openReadingPipe(0, address);
   radio.setPALevel(RF24_PA_LOW);
-  radio.startListening(); // Слухаємо
+  radio.startListening();
 
-  Serial.println("Приймач готовий");
+  Serial.println("Reciever ready");
 }
 
 void loop()
@@ -22,7 +22,7 @@ void loop()
   {
     char text[32] = "";
     radio.read(&text, sizeof(text));
-    Serial.print("Отримано: ");
+    Serial.print("Received: ");
     Serial.println(text);
   }
 }
